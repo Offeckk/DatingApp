@@ -19,11 +19,11 @@ export class RegisterComponent implements OnInit {
       private fb: FormBuilder, private router: Router) {}
 
   ngOnInit(): void {
-    this.initilizeForm();
+    this.initializeForm();
     this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
   }
 
-  initilizeForm() {
+  initializeForm() {
     this.registerForm = this.fb.group({
       gender: ['male'],
       username: ['', Validators.required],
@@ -31,14 +31,13 @@ export class RegisterComponent implements OnInit {
       dateOfBirth: ['', Validators.required],
       city: ['', Validators.required],
       country: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(4),
-        Validators.maxLength(8)]],
-      confirmPassword: ['', [Validators.required, this.matchValues('password')]]
+      password: ['', [Validators.required, 
+        Validators.minLength(4), Validators.maxLength(8)]],
+      confirmPassword: ['', [Validators.required, this.matchValues('password')]],
     });
-
     this.registerForm.controls['password'].valueChanges.subscribe({
       next: () => this.registerForm.controls['confirmPassword'].updateValueAndValidity()
-    });
+    })
   }
 
   matchValues(matchTo: string): ValidatorFn {
@@ -53,12 +52,12 @@ export class RegisterComponent implements OnInit {
     const values = {...this.registerForm.value, dateOfBirth: dob};
     this.accountService.register(values).subscribe({
       next: () => {
-        this.router.navigateByUrl('/members');
+        this.router.navigateByUrl('/members')
       },
       error: error => {
         this.validationErrors = error
-      }
-    });
+      } 
+    })
   }
 
   onCancel() {
