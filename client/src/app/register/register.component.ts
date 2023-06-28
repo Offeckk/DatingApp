@@ -26,13 +26,13 @@ export class RegisterComponent implements OnInit {
   initializeForm() {
     this.registerForm = this.fb.group({
       gender: ['male'],
-      username: ['', Validators.required],
+      username: ['', [Validators.required, this.hasOnlyDigitsAndLetters()]],
       knownAs: ['', Validators.required],
       dateOfBirth: ['', Validators.required],
       city: ['', Validators.required],
       country: ['', Validators.required],
       password: ['', [Validators.required, 
-        Validators.minLength(4), Validators.maxLength(8), this.hasUpperCaseAndDigit()]],
+        Validators.minLength(6), Validators.maxLength(16), this.hasUpperCaseAndDigit()]],
       confirmPassword: ['', [Validators.required, this.matchValues('password')]],
     });
     this.registerForm.controls['password'].valueChanges.subscribe({
@@ -40,10 +40,20 @@ export class RegisterComponent implements OnInit {
     })
   }
 
+  hasOnlyDigitsAndLetters(): ValidatorFn {
+    return (control: AbstractControl) => {
+      const value: string = control.value;
+      if (!(value && /^[A-Za-z0-9]*$/.test(value))) {
+          return {notOnlyDigitsAndLetters: true};
+      } else {
+          return null;
+      }
+    }
+  }
+
   hasUpperCaseAndDigit(): ValidatorFn {
     return (control: AbstractControl) => {
       const value: string = control.value;
-      console.log("hello from hasUpperCaseAndDiigt");
       if (!(value && value !== value.toLowerCase() && /[0-9]/.test(value))) {
           return {notUpperCaseAndDigit: true};
       } else {

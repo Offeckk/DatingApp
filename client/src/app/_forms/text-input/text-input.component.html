@@ -19,11 +19,16 @@
     <div 
         class="invalid-feedback" 
         *ngIf="control.errors?.['notUpperCaseAndDigit']"
-        >Password must have at least one DIGIT and one UPPERCASE letter
+        >{{ label }} must have at least one DIGIT and one UPPERCASE letter
     </div>
     <div 
         class="invalid-feedback" 
         *ngIf="control.errors?.['notMatching']"
         >Passwords do not match
+    </div>
+    <div 
+        class="invalid-feedback" 
+        *ngIf="control.errors?.['notOnlyDigitsAndLetters']"
+        >{{ label }} must contain only DIGITS and LETTERS
     </div>
 </div>
