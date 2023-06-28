@@ -32,12 +32,24 @@ export class RegisterComponent implements OnInit {
       city: ['', Validators.required],
       country: ['', Validators.required],
       password: ['', [Validators.required, 
-        Validators.minLength(4), Validators.maxLength(8)]],
+        Validators.minLength(4), Validators.maxLength(8), this.hasUpperCaseAndDigit()]],
       confirmPassword: ['', [Validators.required, this.matchValues('password')]],
     });
     this.registerForm.controls['password'].valueChanges.subscribe({
       next: () => this.registerForm.controls['confirmPassword'].updateValueAndValidity()
     })
+  }
+
+  hasUpperCaseAndDigit(): ValidatorFn {
+    return (control: AbstractControl) => {
+      const value: string = control.value;
+      console.log("hello from hasUpperCaseAndDiigt");
+      if (!(value && value !== value.toLowerCase() && /[0-9]/.test(value))) {
+          return {notUpperCaseAndDigit: true};
+      } else {
+          return null;
+      }
+    }
   }
 
   matchValues(matchTo: string): ValidatorFn {
